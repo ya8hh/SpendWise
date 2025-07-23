@@ -1,9 +1,12 @@
+import Button from "@/components/Button";
+import HomeCard from "@/components/HomeCard";
 import ScreenWrapper from "@/components/ScreenWrapper";
+import TransactionList from "@/components/TransactionList";
 import Typo from "@/components/Typo";
 import { colors, spacingX, spacingY } from "@/constants/theme";
 import { useAuth } from "@/context/authContext";
 import { verticalScale } from "@/utils/styling";
-import HomeCard from "@components/HomeCard";
+import { router } from "expo-router";
 import * as Icons from "phosphor-react-native";
 import React from "react";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
@@ -42,7 +45,23 @@ const Home = () => {
           <View>
             <HomeCard />
           </View>
+          <TransactionList
+            data={[1, 2, 3, 4, 5, 6, 7]}
+            emptyListMessage="No Transation"
+            loading={false}
+            title="Recent Transactions"
+          />
         </ScrollView>
+        <Button
+          style={styles.floatingButton}
+          onPress={() => router.push("/(modals)/transactionModal")}
+        >
+          <Icons.PlusIcon
+            color={colors.black}
+            weight="bold"
+            size={verticalScale(24)}
+          />
+        </Button>
       </View>
     </ScreenWrapper>
   );
@@ -65,6 +84,7 @@ const styles = StyleSheet.create({
   searchIcon: {
     backgroundColor: colors.neutral700,
     padding: spacingX._10,
+    borderRadius: 50,
   },
   floatingButton: {
     height: verticalScale(50),

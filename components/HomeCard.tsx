@@ -40,8 +40,35 @@ const HomeCard = () => {
                   weight="bold"
                 />
               </View>
-              <Typo size={16} color={colors.neutral400} fontWeight={"500"}>
+              <Typo size={16} color={colors.neutral700} fontWeight={"500"}>
                 Income
+              </Typo>
+            </View>
+            <View style={{ alignSelf: "center" }}>
+              <Typo size={12} color={colors.green} fontWeight={"600"}>
+                {" "}
+                $2511.23
+              </Typo>
+            </View>
+          </View>
+          {/* expense */}
+          <View style={{ gap: verticalScale(5) }}>
+            <View style={styles.incomeExpense}>
+              <View style={styles.statIcon}>
+                <Icons.ArrowUpIcon
+                  size={verticalScale(15)}
+                  color={colors.black}
+                  weight="bold"
+                />
+              </View>
+              <Typo size={16} color={colors.neutral700} fontWeight={"500"}>
+                Expense
+              </Typo>
+            </View>
+            <View style={{ alignSelf: "center" }}>
+              <Typo size={12} color={colors.rose} fontWeight={"600"}>
+                {" "}
+                $5511.23
               </Typo>
             </View>
           </View>
@@ -76,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: spacingY._5,
   },
   bgImage: {
-    height: scale(20),
+    height: scale(210),
     width: "100%",
   },
   container: {
