@@ -4,8 +4,34 @@ import * as Icons from "phosphor-react-native";
 import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import Typo from "./Typo";
+import useFetchData from "@/hooks/useFetchData";
+import { WalletType } from "@/types";
+import { orderBy, where } from "firebase/firestore";
+import { useAuth } from "@/context/authContext";
 
 const HomeCard = () => {
+  const { user } = useAuth();
+  const {
+    data: wallets,
+    error,
+    loading: walletLoading,
+  } = useFetchData<WalletType>("wallets", [
+    where("uid", "==", user?.uid),
+    orderBy("created", "desc"),
+  ]);
+  // calculating total balance and total income
+  const getTotals = () => {
+    return wallets.reduce(
+      (totals: any, item: WalletType) => {
+        totals.balance = totals.balance + Number(item.amount);
+        totals.income = totals.income + Number(item.totalIncome);
+        totals.expense = totals.expense + Number(item.totalExpenses);
+        return totals;
+      },
+      { balance: 0, income: 0, expense: 0 }
+    );
+  };
+
   return (
     <ImageBackground
       resizeMode="stretch"
@@ -26,7 +52,7 @@ const HomeCard = () => {
             />
           </View>
           <Typo color={colors.black} size={30} fontWeight={"bold"}>
-            $2511.23
+            $ {walletLoading ? "----" : getTotals()?.balance?.toFixed(2)}
           </Typo>
         </View>
         {/* expense  */}
@@ -47,7 +73,7 @@ const HomeCard = () => {
             <View style={{ alignSelf: "center" }}>
               <Typo size={12} color={colors.green} fontWeight={"600"}>
                 {" "}
-                $2511.23
+                $ {walletLoading ? "----" : getTotals()?.income?.toFixed(2)}
               </Typo>
             </View>
           </View>
@@ -68,7 +94,7 @@ const HomeCard = () => {
             <View style={{ alignSelf: "center" }}>
               <Typo size={12} color={colors.rose} fontWeight={"600"}>
                 {" "}
-                $5511.23
+                $ {walletLoading ? "----" : getTotals()?.expense?.toFixed(2)}
               </Typo>
             </View>
           </View>

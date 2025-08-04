@@ -1,8 +1,14 @@
-import { expenseCategories } from "@/constants/data";
+import { expenseCategories, incomeCategory } from "@/constants/data";
 import { colors, radius, spacingY } from "@/constants/theme";
-import { TransactionItemProps, TransactionListType } from "@/types";
+import {
+  TransactionItemProps,
+  TransactionListType,
+  TransactionType,
+} from "@/types";
 import { verticalScale } from "@/utils/styling";
 import { FlashList } from "@shopify/flash-list";
+import { router } from "expo-router";
+import { Timestamp } from "firebase/firestore";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -14,7 +20,22 @@ const TransactionList = ({
   loading,
   emptyListMessage,
 }: TransactionListType) => {
-  const handleClick = () => {};
+  const handleClick = (item: TransactionType) => {
+    router.push({
+      pathname: "/(modals)/transactionModal",
+      params: {
+        id: item?.id,
+        type: item?.type,
+        amount: item?.amount?.toString(),
+        category: item?.category,
+        date: (item.date as Timestamp)?.toDate()?.toISOString(),
+        description: item?.description,
+        image: item?.image,
+        uid: item?.uid,
+        walletId: item?.walletId,
+      },
+    });
+  };
   return (
     <View style={styles.container}>
       {title && (
@@ -57,8 +78,17 @@ const TransactionItem = ({
   index,
   handleClick,
 }: TransactionItemProps) => {
-  let category = expenseCategories["groceries"];
+  let category =
+    item?.type === "income"
+      ? incomeCategory
+      : expenseCategories[item?.category!];
   const IconComponent = category.icon;
+  const date = (item?.date as Timestamp)
+    ?.toDate()
+    ?.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+    });
   return (
     <Animated.View
       entering={FadeInDown.delay(index * 70)
@@ -76,21 +106,24 @@ const TransactionItem = ({
           )}
         </View>
         <View style={styles.categoryDes}>
-          <Typo size={17}>{category.label}</Typo>
+          <Typo size={17}>{category?.label}</Typo>
           <Typo
             size={12}
             color={colors.neutral400}
             textProps={{ numberOfLines: 1 }}
           >
-            Paid Bill
+            {item?.description}
           </Typo>
         </View>
         <View style={styles.amountDate}>
-          <Typo color={colors.primary} fontWeight={"500"}>
-            $23
+          <Typo
+            color={item?.type === "income" ? colors.primary : colors.rose}
+            fontWeight={"500"}
+          >
+            {item?.type === "income" ? "+ $" : "- $"} {item?.amount}
           </Typo>
           <Typo size={13} color={colors.neutral400}>
-            12 jan
+            {date}
           </Typo>
         </View>
       </TouchableOpacity>
