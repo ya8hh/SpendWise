@@ -14,7 +14,6 @@ import { ScrollView, StyleSheet, View } from "react-native";
 const SearchModal = () => {
   const { user, updateUserData } = useAuth();
 
-  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const constraints = [where("uid", "==", user?.uid), orderBy("date", "desc")];
   const {
