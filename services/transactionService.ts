@@ -264,11 +264,11 @@ export const fetchWeeklyStats = async (uid: string): Promise<ResponseType> => {
         lable: day.day,
         spacing: scale(4),
         labelWidth: scale(30),
-        fontColor: colors.primary,
+        frontColor: colors.primary,
       },
       {
         value: day.income,
-        fontColor: colors.rose,
+        frontColor: colors.rose,
       },
     ]);
 
@@ -328,11 +328,11 @@ export const fetchMonthlyStats = async (uid: string): Promise<ResponseType> => {
         lable: month.month,
         spacing: scale(4),
         labelWidth: scale(46),
-        fontColor: colors.primary,
+        frontColor: colors.primary,
       },
       {
         value: month.income,
-        fontColor: colors.rose,
+        frontColor: colors.rose,
       },
     ]);
 
@@ -392,11 +392,11 @@ export const fetchYearlyStats = async (uid: string): Promise<ResponseType> => {
         lable: year.year,
         spacing: scale(4),
         labelWidth: scale(35),
-        fontColor: colors.primary,
+        frontColor: colors.primary,
       },
       {
         value: year.income,
-        fontColor: colors.rose,
+        frontColor: colors.rose,
       },
     ]);
 
